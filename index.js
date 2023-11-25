@@ -1,8 +1,5 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
-const cors = require('cors');
-require('./config');
-const connect = require('./connect');
 const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 const url = 'https://rategain.com/blog';
@@ -22,11 +19,6 @@ async function call(){
         date = temp[0];
         let likes = $(this).find('div.content .zilla-likes span').text().toString();
         likes = likes.substring(0,likes.length-11);
-        //console.log(imgUrl,title,date,likes);
-        //return false;
-       /* let db = new connect({img:imgUrl,title:title,date:date,likes:likes});
-        let data = await db.save();
-        console.log(data);*/
         const jsonData = {
             img:imgUrl,
             title:title,
@@ -35,14 +27,6 @@ async function call(){
         };
         json.push(jsonData);
     })
-    
-    /*const blogItems = $('.wpb_wrapper');
-    const blog = blogItems.find('.blog-items');
-    blog.each((i,element)=>{
-        const img = $(element).find('.blog-item .wrap .img');
-        const link = img.find('a').attr('href');
-        console.log(link);
-    })*/
     
     const json2csvParser =  new Json2csvParser({ header: true });
     const csvData = json2csvParser.parse(json);
